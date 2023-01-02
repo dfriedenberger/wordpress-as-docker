@@ -5,7 +5,7 @@
 
 Create '''.env''' File with Password
 ```
-MYSQL_PASSWORD=GPCCQsa7PWCQDmcUKXKWhmx0nGMd2a
+MYSQL_PASSWORD=<generated password>
 ```
 
 ```
