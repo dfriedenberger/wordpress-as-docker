@@ -1,5 +1,6 @@
 version: "3.1" 
 
+name: "${PROJECT_NAME}"
 
 services:
   db:
@@ -19,7 +20,7 @@ services:
     image: wordpress:latest
     restart: always
     ports:
-      - "8000:80"
+      - "${PORT}:80"
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
