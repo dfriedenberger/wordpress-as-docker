@@ -5,16 +5,20 @@ name: "${PROJECT_NAME}"
 services:
   db:
     image: mysql:5.7
+    container_name: "verkehrswende-db"
     restart: always
     environment:
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: "${MYSQL_PASSWORD}"
       MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    networks:
+     - app-network
     volumes:
       - db:/var/lib/mysql
 
   wordpress:
+    container_name: "verkehrswende-wordpress"
     depends_on:
       - db
     image: wordpress:latest
@@ -26,6 +30,9 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: "${MYSQL_PASSWORD}"
       WORDPRESS_DB_NAME: wordpress
+    networks:
+     - app-network
+     - proxy
     volumes:
       - wordpress:/var/www/html
       - ./apache-ssl.conf:/etc/apache2/sites-available/000-default.conf
@@ -33,6 +40,13 @@ services:
       - ./certs:/etc/apache2/ssl
     command: /root/wrapper.sh
     #command: tail -f /dev/null
+
+networks:
+  app-network:
+    driver: bridge
+  proxy:
+    name: "reverse-proxy"
+    external: true
 volumes:
   wordpress:
   db:
