@@ -20,7 +20,7 @@ services:
     image: wordpress:latest
     restart: always
     ports:
-      - "${PORT}:80"
+      - "${PORT}:443"
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_USER: wordpress
@@ -28,6 +28,11 @@ services:
       WORDPRESS_DB_NAME: wordpress
     volumes:
       - wordpress:/var/www/html
+      - ./apache-ssl.conf:/etc/apache2/sites-available/000-default.conf
+      - ./wrapper.sh:/root/wrapper.sh
+      - ./certs:/etc/apache2/ssl
+    command: /root/wrapper.sh
+    #command: tail -f /dev/null
 volumes:
   wordpress:
   db:
